@@ -14,9 +14,9 @@ pygame.display.set_caption("Space Shooter")
 # Clock to control the frame rate
 clock = pygame.time.Clock()
 
-# Create the player object
+# Create the player object and bullets list
 player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50)
-
+bullets_in_screen = []
 # Game loop variables
 running = True
 
@@ -33,11 +33,19 @@ while running:
     # Fill screen with black background
     screen.fill((0, 0, 0))
 
-    # Draw the player
-    player.draw(screen)
+    # update bullets' position
+    for bullet in bullets_in_screen:
+        bullet.rect.y -= bullet.speed  # Move bullet upward
 
+    # Draw the player and bullets
+    player.draw(screen)
+    for bullet in bullets_in_screen:
+        bullet.draw(screen)
     # Update the display
     pygame.display.flip()
+
+    bullets = [bullet for bullet in bullets_in_screen if bullet.rect.bottom > 0]
+
     
     # Control the frame rate
     clock.tick(60)

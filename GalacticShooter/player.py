@@ -8,6 +8,8 @@ class Player:
         self.image.fill((0, 255, 0))  # Green color for the player
         self.rect = self.image.get_rect(center=(x, y))
         self.speed = 5
+        self.shooting = False
+
 
     def update(self, keys):
         # Move left
@@ -16,6 +18,15 @@ class Player:
         # Move right
         if keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
+        if keys[pygame.K_SPACE] and not self.shooting:
+            from bullets import Bullet
+            from main import bullets_in_screen
+            bullet = Bullet(self.rect.x + 25, self.rect.y)
+            bullets_in_screen.append(bullet)
+            self.shooting = True
+
+        if not keys[pygame.K_SPACE]:
+            self.shooting = False
 
         # Keep the player within the screen bounds
         if self.rect.left < 0:
